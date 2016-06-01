@@ -1,10 +1,13 @@
 package co.paulburke.android.itemtouchhelperdemo;
 
 import android.graphics.Color;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,10 +31,15 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private static final String[] STRINGS = new String[]{
             "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"
     };
-
+    public interface OnDragStartListener {
+        void onDragStarted(RecyclerView.ViewHolder viewHolder);
+    }
+    private final OnDragStartListener mDragStartListener;
     private final List<String> mItems = new ArrayList<>();
 
-    public RecyclerListAdapter() {
+
+    public RecyclerListAdapter(OnDragStartListener dragStartListener) {
+        mDragStartListener = dragStartListener;
         mItems.addAll(Arrays.asList(STRINGS));
     }
 
@@ -45,6 +53,15 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         holder.textView.setText(mItems.get(position));
+        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    mDragStartListener.onDragStarted(holder);
+                }
+                return false;
+            }
+        });
     }
 
 //   当条目被删除时的操作（实现ItemTouchHelperAdapter重写onItemDismiss方法）
@@ -77,10 +94,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             ItemTouchHelperViewHolder {
 
         public final TextView textView;
+        public final ImageView handleView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView;
+            textView = (TextView) itemView.findViewById(R.id.text);
+            handleView = (ImageView) itemView.findViewById(R.id.handle);
         }
 
         @Override
@@ -92,7 +111,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         @Override
         public void onItemClear() {
 //            当拖拽完毕后，背景色为透明
-            itemView.setBackgroundColor(0);
+            itemView.setBackgroundColor(Color.WHITE);
         }
     }
 }

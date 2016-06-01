@@ -58,8 +58,15 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
      */
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//        针对listview的布局，可以上下拖拽drag、左右滑动swipe
         final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+
+/*//        针对gridview的布局，可以上下左右拖拽drag，但是不支持左右侧滑swipe
+        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN |
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+        int swipeFlags = 0;*/
+
         return makeMovementFlags(dragFlags, swipeFlags);//表示支持上下拖拽和左右滑动
 //        return makeMovementFlags(dragFlags, 0);//第二项为0，表示你支持拖拽，不支持左右滑动
     }
@@ -182,5 +189,31 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
         itemViewHolder.onItemClear();//在这里处理清除掉条目效果
+    }
+
+    /**
+     * 重写默认的滑动动画，显示线性淡化效果。
+     * @param c
+     * @param recyclerView
+     * @param viewHolder
+     * @param dX
+     * @param dY
+     * @param actionState
+     * @param isCurrentlyActive
+     */
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                            RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                            int actionState, boolean isCurrentlyActive) {
+
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            float width = (float) viewHolder.itemView.getWidth();
+            float alpha = 1.0f - Math.abs(dX) / width;
+            viewHolder.itemView.setAlpha(alpha);
+            viewHolder.itemView.setTranslationX(dX);
+        } else {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
+                    actionState, isCurrentlyActive);
+        }
     }
 }

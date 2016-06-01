@@ -32,7 +32,13 @@ public class RecyclerListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //         ★★★关键之处在于RecyclerListAdapter的写法
-        RecyclerListAdapter adapter = new RecyclerListAdapter();
+        RecyclerListAdapter adapter = new RecyclerListAdapter(new RecyclerListAdapter.OnDragStartListener() {
+            @Override
+            public void onDragStarted(RecyclerView.ViewHolder viewHolder) {
+//                开始拖拽了
+                mItemTouchHelper.startDrag(viewHolder);
+            }
+        });
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 //        setHasFixedSize()方法用来使RecyclerView保持固定的大小，该信息被用于自身的优化。
