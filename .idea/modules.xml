@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Android-ItemTouchHelper-Demo-d8d85c32d579f19718b9bbb97f7a1bda0e616f1f.iml" filepath="$PROJECT_DIR$/Android-ItemTouchHelper-Demo-d8d85c32d579f19718b9bbb97f7a1bda0e616f1f.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ItemTouchHelperdemo-master.iml" filepath="$PROJECT_DIR$/ItemTouchHelperdemo-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

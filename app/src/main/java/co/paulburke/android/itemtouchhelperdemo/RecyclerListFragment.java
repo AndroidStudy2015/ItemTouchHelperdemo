@@ -49,14 +49,11 @@ public class RecyclerListFragment extends Fragment {
          *
          * 如果你只是想要一个基本的实现，有一个
          * 帮助类可以使用：SimpleCallback,但是为了了解其工作机制，我们还是自己实现。
-         *
-         * 在这里我们直接使用了SimpleItemTouchHelperCallback，以后在讨论其工作机制
          */
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
 //        将定义好的mItemTouchHelper应用于我们的recyclerView，使得recyclerView获得move和swipe的效果
         mItemTouchHelper.attachToRecyclerView(recyclerView);
-
 
     }
 
